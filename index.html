@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Nakuru law firm management system</title>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                Nakuru Law Firm Management system
+                <div class="currentDate"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul class="nav-tabs">
+            <li class="active" onclick="showTabs ('dashboard')">Dashboard</li>
+            <li class="active" onclick="showTabs ('clients')">Clients</li>
+            <li class="active" onclick="showTabs ('cases')">Cases</li>
+            <li class="active" onclick="showTabs ('time tracking')">Time Tracking</li>
+            <li class="active" onclick="showTabs ('deadlines')">Deadlines</li>
+            <li class="active" onclick="showTabs ('billing')">Billing</li>
+
+        </ul>
+    </nav>
+
+    <main>
+        <!--dashboard Tab-->
+        <div id="dashboard" class="tab-content active">
+            <h2>dashboard Overview</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalClients">0</div>
+                    <div class="stat-label">Total Clients</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number" id="activeCases">0</div>
+                    <div class="stat-label">Active Cases</div>
+                </div>
+
+                  <div class="stat-card">
+                    <div class="stat-number" id="pendingDeadlines">0</div>
+                    <div class="stat-label">Pending Deadlines</div>
+                </div>
+
+                  <div class="stat-card">
+                    <div class="stat-number" id="unbilledHours">0</div>
+                    <div class="stat-label">Unbilled Hours</div>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+                <h3>Upcoming Deadlines</h3>
+                <table id="upcomingdeadlinestable">
+                    <thead>
+                        <tr>
+                            <th>Case</th>
+                            <th>Deadlines</th>
+                            <th>Description</th>
+                            <th>Days Left</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--Clients Tab-->
+        <div class="clients" class="tab-content">
+            <h2>Client Management</h2>
+            <form id="clientForm" class="form-grid">
+                <input type="hidden" id="clientId">
+                <div class="form-group">
+                    <label for="clientName">Client name</label>
+                    <input type="text" id="clientName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientPhone">Phone Number</label>
+                    <input type="tel" id="clientPhone">
+                </div>
+
+                <div class="form-group">
+                    <label for="clientEmail">Email</label>
+                    <input type="email" id="clientEmail">
+                </div>
+
+                <div class="form-group">
+                    <label for="clientAddress">Address (Nakuru)</label>
+                    <input type="text" id="clientAddress">
+                </div>
+
+                <div class="form-group">
+                    <label for="clientIdNumber">ID/Passport Number</label>
+                    <input type="text" id="clientIDNumber">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Save Client</button>
+                    <button type="button" class="btn btn-danger" onclick="resetClientForm()">Clear</button>
+
+                </div>
+
+            </form>
+
+            <div class="table-container">
+                <table id="clientsTable">
+                    <thead>
+                        <tr>
+                            <th>Client ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>ID Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <!--case tab-->
+        <div id="cases" class="tab-content">
+            <h2>Case Management</h2>
+            <form id="caseForm" class="form-grid">
+                <input type="hidden" id="caseId">
+                <div class="form-group">
+                    <label for="caseClient">Client</label>
+                    <select id="caseClient" required>
+                        <option value="">Select Client</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseTitle">Case Title</label>
+                    <input type="text" id="caseTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseType">Case Type</label>
+                    <select name="" id="caseType" required>
+
+                        <option value="">Select Type</option>
+                        <option value="Conveyance">Conveyance</option>
+                        <option value="successions">Succession</option>
+                        <option value="civilsuit">Civil Suit</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="family">Family Law</option>
+                        <option value="employment">Employment</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="courtNumber">Court/Matter Number</label>
+                    <input type="text" id="courtNumber">
+                </div>
+
+                <div class="form-group">
+                    <label for="opposing Party">Opposing Party</label>
+                    <input type="text" id="opposingParty">
+                </div>
+
+                <div class="form-group">
+                    <label for="responsibleLawyer">Responsible Lawyer</label>
+                    <input type="text" id="responsibleLawyer">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Save Case</button>
+                    <button type="button" class="btn btn-danger" onclick="resetCaseForm()">Clear</button>
+                </div>
+
+            </form>
+
+            <div class="table-container">
+                <table id="content">
+                    <thead>
+                        <tr>
+                            <th>Case ID</th>
+                            <th>Client</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Court Number</th>
+                            <th>Lawyer</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <!--Time Tracking tab-->
+        <div id="time-tracking" class="tab-content">
+            <h2>Time Tracking</h2>
+            <form id="timeForm" class="form-grid">
+                <div class="form-group">
+                    <label for="timeCase">Case</label>
+                    <select name="" id="timeCase" required>
+                        <option value="">Select Case</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeLawyer">Lawyer Name</label>
+                    <input type="text" id="timeLawyer" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeDate">Date</label>
+                    <input type="date" id="timeDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeDescription">Description Of Work</label>
+                    <textarea name="" id="timeDescription" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeHours">Time Spent (Hours)</label>
+                    <input type="number" id="timeHours" step="0.25" min="0.25" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="timerate">Hourly Rate (KES)</label>
+                    <input type="number" id="timeRate" value="5000" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Record Time</button>
+                </div>
+
+
+            </form>
+
+            <div class="table-container">
+                <table id="timeTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Case</th>
+                            <th>Lawyer</th>
+                            <th>Description</th>
+                            <th>Hours</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+        <!--Deadlines Tab-->
+        <div id="deadlines" class="tab-content">
+            <h2>Deadlines Management</h2>
+            <form id="deadlineForm" class="form-grid">
+                <div class="form-group">
+                    <label for="deadlineCase">Case</label>
+                    <select name="" id="deadlineCase" required>
+                        <option value="">Select Case</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadlineDescription">Description</label>
+                    <input type="text" id="deadlineDescription" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadlineDate">Deadline Date</label>
+                    <input type="date" id="deadlineDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadlineReminder">Reminder Days Before</label>
+                    <input type="number" id="deadlineReminder" value="7" min="1">
+
+                </div>
+
+                <div class="form-group">
+                   <button type="submit" class="btn">save Deadline</button>
+                </div>
+            </form>
+
+            <div class="table-container">
+                <table id="timeTable">
+                    <thead>
+                        <tr>
+                            <th>Case</th>
+                            <th>Description</th>
+                            <th>Deadline Date</th>
+                            <th>Days left</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!--Billing Tab-->
+        <div id="billing" class="tab-content">
+            <h2>Billing &Invoicing</h2>
+            <div class="form-group">
+                <button class="btn" onclick="generateInvoice()">generate new Invoice</button>
+            </div>
+            
+            <div class="table-container">
+                <h3>Unbilled Time Entries</h3>
+                <table id="UnbilledTimeTable">
+                    <thead>
+                        <tr>
+                            <th> <input type="checkbox" id="selectAllTime"></th>
+                            <th>Date</th>
+                            <th>Case</th>
+                            <th>Lawyer</th>
+                            <th>Description</th>
+                            <th>Hours</th>
+                            <th>Amount</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+
+            <div class="table-container mt-2">
+                <h3>Invoices</h3>
+                <table id="invoicesTable">
+                    <thead>
+                        <tr>
+                            <th>Invoice No</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+    <footer>
+        <h4>Designed By: EDDY CHIRINGA</h4>
+        <P>A student from Kisii University Persuing Bachalor Of Information Technology</P>
+        <a href="Email">eddyalpha12@gmail.com</a>
+        <marquee behavior="" direction="right">hello guys welcome to EDDYTECH Programing Hub where you will learn programming languages at a low cost</marquee>
+    </footer>
+
+    <script>
+        //data Storage
+        let clients = JSON.parse(localStorage.getItem('lawFirm_clients')) || [];
+        let cases = JSON.parse(localStorage.getItem('lawFirm_cases')) || [];
+        let timeEntries = JSON.parse(localStorage.getItem('lawFirm_timeEntries')) || [];
+        let deadlines = JSON.parse(localStorage.getItem('lawFirm_deadlines')) || [];
+        let Invoices = JSON.parse(localStorage.getItem('lawFirm_invoices')) || [];
+
+        //initialize
+        document.addEventListener
+           ('DOMContentLoaded', function() {
+            updateCurrentDate();
+            loadClientsTable();
+            loadCasesTable();
+            loadDeadlinesTable();
+            loadInvoiceTable();
+            updateDashboard();
+            populateClientSelect();
+            setDefaultDate();
+           });
+
+           //utility Function
+           function generateId() {
+            return Date.now().toString();
+           }
+
+           function formatCurrency(amount) {
+            return 'KES' + Number(amount).toLocaleString();
+           }
+
+           function formatDate(dateString) {
+             return new Date(dateString).toLocaleDateString();
+           }
+
+           function updateCurrentDate() {
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-KE', {
+                weekday:"long",
+                year:"numeric",
+                month:"long",
+                day:"numeric",
+            });
+
+           }
+
+           function setDefaultDate() {
+              const today =new Date().toISOString ().split('T')[0];
+              document.getElementById('timeDate').value =today;
+              document.getElementById('deadlineDate').value =today;
+           }
+
+           //tab navigation
+           function showTabs(tabName) {
+              //Hide all Tabs
+              document.querySelectorAll('.tab-content').forEach(item => {
+                item.classList.remove('active');
+              });
+              //Remove active class from all nav items
+              document.querySelectorAll('.nav-tabs li').forEach(item => {
+                item.classList.remove('active');
+              });
+              
+              //show selected tabs
+              document.getElementById(tabName).classList.add('active');
+
+              //Add active class to clicked nav item
+              event.target.classList.add('active');
+
+              //Refresh data if needed
+              if (tabName === 'dashboard') {
+                updateDashboard();
+              }
+           }
+
+           //client management
+           document.getElementById('clientForm').addEventListener('submit', function (e) {
+             e.preventDefault();
+
+             const clientId = document
+                .getElementById('clientId').value;
+                const clientData = {
+                    name: document.getElementById('clientName').value,
+                    phone: document.getElementById('clientPhone').value,
+                    email: document.getElementById('clientEmail').value,
+                    address: document.getElementById('clientAddress').value,
+                    idNumber: document.getElementById('clientIdNumber').value
+
+                };
+
+                if (clientId) {
+                    //update existing client
+                    const index = clients.findIndex(c=> c.id === clientId);
+                    clients[index] = {
+                        ...clients[index],
+                        ...clientData
+                    }
+                }else{
+                    //Add new Client
+                    clients.push({
+                        id: generateId(),
+                        clientId: 'CLI-' + (clients.length + 1).toString().padstart(3, '0'),
+                        ...clientData,
+                        dateAdded: new Date
+                        ().toISOString(),
+                        status: 'Active'
+                    });
+                }
+
+                saveData();
+                resetClientForm();
+                loadClientsTable();
+                populateClientSelect();
+                updateDashboard();
+           });
+
+           function loadClientsTable() {
+               const tbody = document.querySelector
+                  ('#clientsTable tbody');
+                tbody.innerHTML ='';
+
+                clients.forEach(client => {
+                    const row = document.createElement
+                       ('tr');
+                    row.innerHTML = `
+                    <td>${client.clientId}</td>
+                    <td>${client.name}</td>
+                    <td>${client.phone}</td>
+                    <td>${client.email}</td>
+                    <td>${client.idNumber}</td>
+                    <td class="action-buttons">
+                        <button class="btn" onclick="editClient('${client.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteClient('${client.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+                });
+           }
+
+           function editClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (client) {
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('clientName').value = client.name;
+                document.getElementById('clientPhone').value = client.phone;
+                document.getElementById('clientEmail').value = client.email;
+                document.getElementById('clientAddress').value = client.address;
+                document.getElementById('clientIdNumber').value = client.idNumber;
+                
+                // Scroll to form
+                showTab('clients');
+            }
+        }
+
+        function deleteClient(id) {
+            if (confirm('Are you sure you want to delete this client?')) {
+                clients = clients.filter(c => c.id !== id);
+                saveData();
+                loadClientsTable();
+                populateClientSelects();
+                updateDashboard();
+            }
+        }
+
+        function resetClientForm() {
+            document.getElementById('clientForm').reset();
+            document.getElementById('clientId').value = '';
+        }
+
+        // Case Management (Similar pattern for other modules)
+        document.getElementById('caseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const caseId = document.getElementById('caseId').value;
+            const caseData = {
+                clientId: document.getElementById('caseClient').value,
+                title: document.getElementById('caseTitle').value,
+                type: document.getElementById('caseType').value,
+                courtNumber: document.getElementById('courtNumber').value,
+                opposingParty: document.getElementById('opposingParty').value,
+                responsibleLawyer: document.getElementById('responsibleLawyer').value
+            };
+
+            if (caseId) {
+                const index = cases.findIndex(c => c.id === caseId);
+                cases[index] = { ...cases[index], ...caseData };
+            } else {
+                cases.push({
+                    id: generateId(),
+                    caseId: 'MAT-' + (cases.length + 1).toString().padStart(3, '0'),
+                    ...caseData,
+                    dateOpened: new Date().toISOString(),
+                    status: 'Active'
+                });
+            }
+
+            saveData();
+            resetCaseForm();
+            loadCasesTable();
+            populateCaseSelects();
+            updateDashboard();
+        });
+
+        function loadCasesTable() {
+            const tbody = document.querySelector('#casesTable tbody');
+            tbody.innerHTML = '';
+
+            cases.forEach(caseItem => {
+                const client = clients.find(c => c.id === caseItem.clientId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${caseItem.caseId}</td>
+                    <td>${client ? client.name : 'N/A'}</td>
+                    <td>${caseItem.title}</td>
+                    <td>${caseItem.type}</td>
+                    <td>${caseItem.courtNumber}</td>
+                    <td>${caseItem.responsibleLawyer}</td>
+                    <td class="action-buttons">
+                        <button class="btn" onclick="editCase('${caseItem.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteCase('${caseItem.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function editCase(id) {
+            const caseItem = cases.find(c => c.id === id);
+            if (caseItem) {
+                document.getElementById('caseId').value = caseItem.id;
+                document.getElementById('caseClient').value = caseItem.clientId;
+                document.getElementById('caseTitle').value = caseItem.title;
+                document.getElementById('caseType').value = caseItem.type;
+                document.getElementById('courtNumber').value = caseItem.courtNumber;
+                document.getElementById('opposingParty').value = caseItem.opposingParty;
+                document.getElementById('responsibleLawyer').value = caseItem.responsibleLawyer;
+                
+                showTab('cases');
+            }
+        }
+
+        function deleteCase(id) {
+            if (confirm('Are you sure you want to delete this case?')) {
+                cases = cases.filter(c => c.id !== id);
+                saveData();
+                loadCasesTable();
+                populateCaseSelects();
+                updateDashboard();
+            }
+        }
+
+        function resetCaseForm() {
+            document.getElementById('caseForm').reset();
+            document.getElementById('caseId').value = '';
+        }
+
+        // Time Tracking
+        document.getElementById('timeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const timeData = {
+                caseId: document.getElementById('timeCase').value,
+                lawyer: document.getElementById('timeLawyer').value,
+                date: document.getElementById('timeDate').value,
+                description: document.getElementById('timeDescription').value,
+                hours: parseFloat(document.getElementById('timeHours').value),
+                rate: parseFloat(document.getElementById('timeRate').value),
+                billed: false
+            };
+
+            timeEntries.push({
+                id: generateId(),
+                ...timeData,
+                amount: timeData.hours * timeData.rate
+            });
+
+            saveData();
+            document.getElementById('timeForm').reset();
+            setDefaultDate();
+            loadTimeTable();
+            updateDashboard();
+        });
+
+        function loadTimeTable() {
+            const tbody = document.querySelector('#timeTable tbody');
+            tbody.innerHTML = '';
+
+            timeEntries.forEach(entry => {
+                const caseItem = cases.find(c => c.id === entry.caseId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(entry.date)}</td>
+                    <td>${caseItem ? caseItem.title : 'N/A'}</td>
+                    <td>${entry.lawyer}</td>
+                    <td>${entry.description}</td>
+                    <td>${entry.hours}</td>
+                    <td>${formatCurrency(entry.rate)}</td>
+                    <td>${formatCurrency(entry.amount)}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-danger" onclick="deleteTimeEntry('${entry.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function deleteTimeEntry(id) {
+            if (confirm('Are you sure you want to delete this time entry?')) {
+                timeEntries = timeEntries.filter(t => t.id !== id);
+                saveData();
+                loadTimeTable();
+                updateDashboard();
+            }
+        }
+
+        // Deadline Management
+        document.getElementById('deadlineForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const deadlineData = {
+                caseId: document.getElementById('deadlineCase').value,
+                description: document.getElementById('deadlineDescription').value,
+                date: document.getElementById('deadlineDate').value,
+                reminderDays: parseInt(document.getElementById('deadlineReminder').value)
+            };
+
+            deadlines.push({
+                id: generateId(),
+                ...deadlineData,
+                status: 'Pending'
+            });
+
+            saveData();
+            document.getElementById('deadlineForm').reset();
+            setDefaultDate();
+            loadDeadlinesTable();
+            updateDashboard();
+        });
+
+        function loadDeadlinesTable() {
+            const tbody = document.querySelector('#deadlinesTable tbody');
+            tbody.innerHTML = '';
+
+            deadlines.forEach(deadline => {
+                const caseItem = cases.find(c => c.id === deadline.caseId);
+                const daysLeft = Math.ceil((new Date(deadline.date) - new Date()) / (1000 * 60 * 60 * 24));
+                const status = daysLeft < 0 ? 'Overdue' : daysLeft === 0 ? 'Due Today' : 'Pending';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${caseItem ? caseItem.title : 'N/A'}</td>
+                    <td>${deadline.description}</td>
+                    <td>${formatDate(deadline.date)}</td>
+                    <td>${daysLeft}</td>
+                    <td>${status}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-danger" onclick="deleteDeadline('${deadline.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function deleteDeadline(id) {
+            if (confirm('Are you sure you want to delete this deadline?')) {
+                deadlines = deadlines.filter(d => d.id !== id);
+                saveData();
+                loadDeadlinesTable();
+                updateDashboard();
+            }
+        }
+
+        // Billing and Invoicing
+        function loadInvoicesTable() {
+            const tbody = document.querySelector('#invoicesTable tbody');
+            tbody.innerHTML = '';
+
+            invoices.forEach(invoice => {
+                const client = clients.find(c => c.id === invoice.clientId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${invoice.invoiceNumber}</td>
+                    <td>${client ? client.name : 'N/A'}</td>
+                    <td>${formatDate(invoice.date)}</td>
+                    <td>${formatCurrency(invoice.total)}</td>
+                    <td>${invoice.status}</td>
+                    <td class="action-buttons">
+                        <button class="btn" onclick="viewInvoice('${invoice.id}')">View</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function generateInvoice() {
+            // Simple invoice generation - in a real app, this would be more complex
+            const invoiceNumber = 'INV-' + (invoices.length + 1).toString().padStart(3, '0');
+            const newInvoice = {
+                id: generateId(),
+                invoiceNumber: invoiceNumber,
+                date: new Date().toISOString(),
+                clientId: '', // Would be selected from UI
+                items: [],
+                total: 0,
+                status: 'Draft'
+            };
+            
+            invoices.push(newInvoice);
+            saveData();
+            loadInvoicesTable();
+            alert('New invoice ${invoiceNumber} created!');
+        }
+
+        function viewInvoice(id) {
+            const invoice = invoices.find(i => i.id === id);
+            if (invoice) {
+                alert('Invoice ${invoice.invoiceNumber}\nTotal: ${formatCurrency(invoice.total)}\nStatus: ${invoice.status}');
+            }
+        }
+
+        // Populate Select Dropdowns
+        function populateClientSelects() {
+            const clientSelects = document.querySelectorAll('select[id$="Client"], select[id$="Case"]');
+            clientSelects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Select Client</option>';
+                
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.id;
+                    option.textContent = '${client.name} (${client.clientId})';
+                    select.appendChild(option);
+                });
+                
+                // Restore previous value if still valid
+                if (currentValue && clients.find(c => c.id === currentValue)) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        function populateCaseSelects() {
+            const caseSelects = document.querySelectorAll('select[id$="Case"]');
+            caseSelects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Select Case</option>';
+                
+                cases.forEach(caseItem => {
+                    const client = clients.find(c => c.id === caseItem.clientId);
+                    const option = document.createElement('option');
+                    option.value = caseItem.id;
+                    option.textContent = '${caseItem.title} - ${client ? client.name : "N/A"}';
+                    select.appendChild(option);
+                });
+                
+                if (currentValue && cases.find(c => c.id === currentValue)) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        // Dashboard Updates
+        function updateDashboard() {
+            document.getElementById('totalClients').textContent = clients.length;
+            document.getElementById('activeCases').textContent = cases.filter(c => c.status === 'Active').length;
+            
+            const pendingDeadlines = deadlines.filter(d => {
+                const daysLeft = Math.ceil((new Date(d.date) - new Date()) / (1000 * 60 * 60 * 24));
+                return daysLeft >= 0;
+            }).length;
+            document.getElementById('pendingDeadlines').textContent = pendingDeadlines;
+            
+            const unbilledHours = timeEntries.filter(t => !t.billed).reduce((sum, t) => sum + t.hours, 0);
+            document.getElementById('unbilledHours').textContent = unbilledHours.toFixed(1);
+            
+            loadUpcomingDeadlines();
+        }
+
+        function loadUpcomingDeadlines() {
+            const tbody = document.querySelector('#upcomingDeadlinesTable tbody');
+            tbody.innerHTML = '';
+
+            const upcoming = deadlines
+                .filter(d => {
+                    const daysLeft = Math.ceil((new Date(d.date) - new Date()) / (1000 * 60 * 60 * 24));
+                    return daysLeft >= 0 && daysLeft <= 30;
+                })
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 5);
+
+            upcoming.forEach(deadline => {
+                const caseItem = cases.find(c => c.id === deadline.caseId);
+                const daysLeft = Math.ceil((new Date(deadline.date) - new Date()) / (1000 * 60 * 60 * 24));
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${caseItem ? caseItem.title : 'N/A'}</td>
+                    <td>${formatDate(deadline.date)}</td>
+                    <td>${deadline.description}</td>
+                    <td>${daysLeft}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Data Persistence
+        function saveData() {
+            localStorage.setItem('lawFirm_clients', JSON.stringify(clients));
+            localStorage.setItem('lawFirm_cases', JSON.stringify(cases));
+            localStorage.setItem('lawFirm_timeEntries', JSON.stringify(timeEntries));
+            localStorage.setItem('lawFirm_deadlines', JSON.stringify(deadlines));
+            localStorage.setItem('lawFirm_invoices', JSON.stringify(invoices));
+        }
+
+        // Export Data (Bonus Feature)
+        function exportData() {
+            const data = {
+                clients,
+                cases,
+                timeEntries,
+                deadlines,
+                invoices,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'law-firm-backup-${new Date().toISOString().split("T")[0]}.json';
+            link.click();
+        }
+
+        // Add export button to header
+        const headerContent = document.querySelector('.header-content');
+        const exportBtn = document.createElement('button');
+        exportBtn.textContent = 'Export Data';
+        exportBtn.className = 'btn';
+        exportBtn.style.marginLeft = '1rem';
+        exportBtn.onclick = exportData;
+        headerContent.appendChild(exportBtn);
+
+    </script>
+</body>
+</html>
